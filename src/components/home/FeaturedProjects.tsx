@@ -166,10 +166,10 @@ const ProjectCard = ({ project, index, isSelected, onSelect }: ProjectCardProps)
         {/* Podstawowa zawartość dla SSR */}
         <div className={`absolute inset-0 bg-gradient-to-br ${project.color} opacity-80`} />
         <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" />
-        <div className="relative z-10 p-6 h-full flex flex-col justify-between">
+        <div className="relative z-10 p-4 h-full flex flex-col justify-between">
           {/* Minimalny interfejs dla SSR */}
           <div>
-            <h3 className="text-xl font-bold mb-3 text-white">{project.title}</h3>
+            <h3 className="text-xl font-bold mb-2 text-white">{project.title}</h3>
             <p className="text-sm text-gray-200 line-clamp-2">{project.description}</p>
           </div>
         </div>
@@ -181,16 +181,16 @@ const ProjectCard = ({ project, index, isSelected, onSelect }: ProjectCardProps)
     <motion.div
       ref={cardRef}
       className={`relative overflow-hidden rounded-xl cursor-pointer transition-all duration-700 ${
-        isSelected ? 'ring-2 ring-offset-4 ring-offset-gray-900' : ''
+        isSelected ? 'ring-2 ring-offset-2 ring-offset-gray-900' : ''
       }`}
       style={{
         transformStyle: 'preserve-3d',
         transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${isSelected ? 1.01 : 1})`,
         transition: 'transform 0.8s linear', // Dodane wolne przejście
         boxShadow: isSelected 
-          ? `0 25px 50px -12px rgba(0, 0, 0, 0.3), 
-             0 0 20px 2px rgba(${project.colorRgb}, 0.2)` // Mniejsza intensywność
-          : '0 10px 30px -15px rgba(0, 0, 0, 0.2)',
+          ? `0 20px 40px -8px rgba(0, 0, 0, 0.3), 
+             0 0 15px 2px rgba(${project.colorRgb}, 0.2)` // Mniejsza intensywność
+          : '0 10px 20px -15px rgba(0, 0, 0, 0.2)',
       }}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
@@ -278,13 +278,13 @@ const ProjectCard = ({ project, index, isSelected, onSelect }: ProjectCardProps)
       </AnimatePresence>
       
       {/* Zawartość karty */}
-      <div className="relative z-10 p-6 h-full flex flex-col justify-between">
+      <div className="relative z-10 p-4 h-full flex flex-col justify-between">
         <div>
           <div className="mb-2">
             {project.technologies.slice(0, 3).map(tech => (
               <span 
                 key={tech} 
-                className="inline-block px-2 py-1 text-xs mr-2 mb-2 rounded-full bg-white/20 backdrop-blur-sm transition-colors duration-500 hover:bg-white/25"
+                className="inline-block px-2 py-1 text-xs mr-2 mb-1 rounded-full bg-white/20 backdrop-blur-sm transition-colors duration-500 hover:bg-white/25"
               >
                 {tech}
               </span>
@@ -297,7 +297,7 @@ const ProjectCard = ({ project, index, isSelected, onSelect }: ProjectCardProps)
               </span>
             )}
           </div>
-          <h3 className="text-xl font-bold mb-3 text-white">{project.title}</h3>
+          <h3 className="text-xl font-bold mb-2 text-white">{project.title}</h3>
           <p className={`text-sm text-gray-200 ${isSelected ? 'line-clamp-none' : 'line-clamp-2'}`}>
             {project.description}
           </p>
@@ -306,7 +306,7 @@ const ProjectCard = ({ project, index, isSelected, onSelect }: ProjectCardProps)
         <AnimatePresence>
           {isSelected && (
             <motion.div 
-              className="mt-4 flex space-x-3"
+              className="mt-3 flex space-x-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
@@ -445,7 +445,7 @@ export default function FeaturedProjects() {
   return (
     <section 
       ref={ref} 
-      className="py-20 bg-gradient-to-b from-gray-900 to-gray-950 overflow-hidden relative"
+      className="py-14 bg-gradient-to-b from-gray-900 to-gray-950 overflow-hidden relative"
     >
       {/* Rozszerzona dekoracja tła - SPOWOLNIONA */}
       <div className="absolute top-0 left-0 w-full h-full overflow-hidden">
@@ -475,19 +475,19 @@ export default function FeaturedProjects() {
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <motion.div 
-          className="mb-12 text-center"
+          className="mb-8 text-center"
           variants={containerVariants}
           initial="hidden"
           animate={controls}
         >
           <motion.div 
             variants={itemVariants} 
-            className={`inline-block mb-3 px-3 py-1 rounded-full border border-${currentProject.color.split('-')[1]}/30 bg-${currentProject.color.split('-')[1]}/10 text-${currentProject.color.split('-')[1]}-400 text-sm transition-colors duration-1500`} // Wolniejsza animacja
+            className={`inline-block mb-2 px-3 py-1 rounded-full border border-${currentProject.color.split('-')[1]}/30 bg-${currentProject.color.split('-')[1]}/10 text-${currentProject.color.split('-')[1]}-400 text-sm transition-colors duration-1500`} // Wolniejsza animacja
           >
             Moje prace
           </motion.div>
           
-          <motion.h2 variants={itemVariants} className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400">
+          <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400">
             Wyróżnione projekty
           </motion.h2>
           
@@ -498,7 +498,7 @@ export default function FeaturedProjects() {
         </motion.div>
         
         {/* Projekty w siatce z efektem 3D */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 mb-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 mb-10">
           {projects.map((project, index) => (
             <ProjectCard
               key={project.id}

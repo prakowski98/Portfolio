@@ -105,8 +105,8 @@ const BlogCard = ({ post, index }: { post: typeof blogPosts[0], index: number })
           : 'perspective(1000px) rotateX(0) rotateY(0)',
         transition: 'transform 1s linear', // Spowolnione przejście
         boxShadow: isHovered 
-          ? '0 25px 50px -12px rgba(0, 0, 0, 0.3)' // Zmniejszona intensywność
-          : '0 10px 30px -15px rgba(0, 0, 0, 0.2)',
+          ? '0 20px 40px -10px rgba(0, 0, 0, 0.3)' // Zmniejszona intensywność
+          : '0 10px 20px -15px rgba(0, 0, 0, 0.2)',
       }}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
@@ -117,13 +117,13 @@ const BlogCard = ({ post, index }: { post: typeof blogPosts[0], index: number })
       className="transition-transform duration-1000 hover:scale-[1.01]" // Mniejsza skala z wolniejszą animacją
     >
       <Link href={`/blog/${post.id}`} className="block h-full">
-        <div className="p-6 flex flex-col h-full">
+        <div className="p-4 flex flex-col h-full">
           {/* Tagi */}
-          <div className="mb-4 flex flex-wrap gap-2">
+          <div className="mb-2 flex flex-wrap gap-1.5">
             {post.tags.map(tag => (
               <span 
                 key={tag} 
-                className={`inline-block px-2 py-1 text-xs rounded-full ${tagColorMap[post.color]}`}
+                className={`inline-block px-2 py-0.5 text-xs rounded-full ${tagColorMap[post.color]}`}
               >
                 {tag}
               </span>
@@ -131,17 +131,17 @@ const BlogCard = ({ post, index }: { post: typeof blogPosts[0], index: number })
           </div>
           
           {/* Tytuł */}
-          <h3 className="text-xl font-bold mb-3 text-white">
+          <h3 className="text-lg font-bold mb-2 text-white">
             {post.title}
           </h3>
           
           {/* Fragment */}
-          <p className="text-gray-300 mb-4 flex-grow">
+          <p className="text-sm text-gray-300 mb-3 flex-grow">
             {post.excerpt}
           </p>
           
           {/* Data i czas czytania */}
-          <div className="flex justify-between items-center mt-auto pt-4 border-t border-gray-700/50 text-sm">
+          <div className="flex justify-between items-center mt-auto pt-3 border-t border-gray-700/50 text-xs">
             <span className={dateColor[post.color]}>
               {new Date(post.date).toLocaleDateString('pl-PL', { 
                 year: 'numeric', 
@@ -201,7 +201,7 @@ export default function LatestPosts() {
   return (
     <section 
       ref={ref} 
-      className="py-20 bg-gradient-to-b from-gray-950 to-gray-900 overflow-hidden relative"
+      className="py-14 bg-gradient-to-b from-gray-950 to-gray-900 overflow-hidden relative"
     >
       {/* Dekoracyjne elementy tła - ZREDUKOWANE */}
       <div className="absolute -top-40 -right-40 w-80 h-80 bg-emerald-600/3 rounded-full blur-3xl"></div>
@@ -209,16 +209,16 @@ export default function LatestPosts() {
       
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <motion.div 
-          className="mb-12 text-center"
+          className="mb-8 text-center"
           initial="hidden"
           animate={isInView ? "visible" : "hidden"}
           variants={containerVariants}
         >
-          <motion.div variants={itemVariants} className="inline-block mb-3 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-sm">
+          <motion.div variants={itemVariants} className="inline-block mb-2 px-3 py-1 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-sm">
             Blog
           </motion.div>
           
-          <motion.h2 variants={itemVariants} className="text-3xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400">
+          <motion.h2 variants={itemVariants} className="text-3xl md:text-4xl font-bold mb-3 bg-clip-text text-transparent bg-gradient-to-r from-gray-100 to-gray-400">
             Najnowsze artykuły
           </motion.h2>
           
@@ -229,7 +229,7 @@ export default function LatestPosts() {
         </motion.div>
         
         {/* Wpisy bloga z efektem 3D */}
-        <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <div className="grid md:grid-cols-3 gap-5 mb-8">
           {blogPosts.map((post, index) => (
             <BlogCard key={post.id} post={post} index={index} />
           ))}
@@ -244,10 +244,10 @@ export default function LatestPosts() {
         >
           <Link href="/blog">
             <button
-              className="px-6 py-3 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 font-medium inline-flex items-center gap-2 transition-all duration-700 hover:translate-y-[-2px]"
+              className="px-5 py-2.5 bg-emerald-500/10 border border-emerald-500/30 rounded-lg text-emerald-400 font-medium inline-flex items-center gap-2 transition-all duration-700 hover:translate-y-[-2px]"
             >
               Zobacz wszystkie artykuły
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
             </button>

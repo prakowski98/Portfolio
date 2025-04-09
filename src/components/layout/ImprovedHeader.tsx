@@ -1,5 +1,4 @@
 'use client';
-
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
@@ -24,34 +23,16 @@ const NavItem = ({ href, label, isMobile, closeMenu, isActive }: NavItemProps) =
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (closeMenu) closeMenu();
-    
     window.history.pushState({}, '', href);
     router.push(href);
   };
   
   return (
-    <motion.div 
-      className="relative"
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-    >
-      <Link 
-        href={href} 
-        onClick={handleClick}
-        className={`relative group ${
-          isActive
-            ? 'text-blue-400 font-medium' 
-            : 'text-gray-300 hover:text-white transition-colors'
-        } ${isMobile ? 'text-xl py-2' : ''}`}
-      >
+    <motion.div className="relative" onHoverStart={() => setIsHovered(true)} onHoverEnd={() => setIsHovered(false)}>
+      <Link href={href} onClick={handleClick} className={`relative group ${isActive ? 'text-blue-400 font-medium' : 'text-gray-300 hover:text-white transition-colors'} ${isMobile ? 'text-xl py-2' : ''}`}>
         {label}
-        <span 
-          className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-400 transform origin-left transition-transform duration-300 ${
-            isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
-          }`}
-        />
+        <span className={`absolute -bottom-1 left-0 w-full h-0.5 bg-blue-400 transform origin-left transition-transform duration-300 ${isActive ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'}`}/>
       </Link>
-      
       {!isMobile && isHovered && (
         <AnimatePresence>
           <motion.div
@@ -60,8 +41,7 @@ const NavItem = ({ href, label, isMobile, closeMenu, isActive }: NavItemProps) =
             initial={{ opacity: 0, y: 5 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 5 }}
-            transition={{ duration: 0.2 }}
-          >
+            transition={{ duration: 0.2 }}>
             <div className="bg-gray-800 text-white text-sm py-2 px-3 rounded-lg shadow-lg whitespace-nowrap">
               {href === '/' && (
                 <div className="flex items-center space-x-2">
@@ -125,23 +105,17 @@ export default function ImprovedHeader() {
   ];
   
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     const handleInteraction = () => {
       setUserInteracted(true);
       window.removeEventListener('scroll', handleInteraction);
       window.removeEventListener('click', handleInteraction);
       window.removeEventListener('keydown', handleInteraction);
     };
-    
+    window.addEventListener('scroll', handleScroll);
     window.addEventListener('scroll', handleInteraction);
     window.addEventListener('click', handleInteraction);
     window.addEventListener('keydown', handleInteraction);
-    
     return () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('scroll', handleInteraction);
@@ -159,20 +133,14 @@ export default function ImprovedHeader() {
     const handleKeyDown = (e: KeyboardEvent) => {
       setSequence(prev => {
         const newSequence = [...prev, e.key];
-        if (newSequence.length > secretSequence.length) {
-          newSequence.shift();
-        }
-        
-        // Check if sequence matches
+        if (newSequence.length > secretSequence.length) newSequence.shift();
         if (newSequence.join('') === secretSequence.join('')) {
           setShowEasterEgg(true);
           setTimeout(() => setShowEasterEgg(false), 5000);
         }
-        
         return newSequence;
       });
     };
-    
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
@@ -185,25 +153,20 @@ export default function ImprovedHeader() {
   return (
     <>
       <motion.header 
-        className={`fixed w-full z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-black/80 backdrop-blur-md py-3' : 'bg-transparent py-6'
-        }`}
+        className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-black/80 backdrop-blur-md py-3' : 'bg-transparent py-6'}`}
         variants={headerVariants}
         initial="initial"
-        animate="animate"
-      >
+        animate="animate">
         <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
           {/* Logo */}
           <Link href="/">
             <motion.div 
               className="text-xl md:text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 cursor-pointer"
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
+              whileTap={{ scale: 0.95 }}>
               Patryk<span className="text-white">Rakowski</span>
             </motion.div>
           </Link>
-
           {/* Navigation - desktop */}
           <div className="hidden md:flex space-x-8">
             {navItems.map((item) => (
@@ -215,13 +178,11 @@ export default function ImprovedHeader() {
               />
             ))}
           </div>
-
           {/* UI Controls */}
           <div className="hidden md:flex items-center space-x-4">
             <LanguageToggle />
             <ThemeToggle />
           </div>
-
           {/* Mobile menu button */}
           <div className="flex md:hidden items-center space-x-4">
             <LanguageToggle />
@@ -229,27 +190,20 @@ export default function ImprovedHeader() {
             <button 
               className="focus:outline-none"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label={isMenuOpen ? "Zamknij menu" : "Otwórz menu"}
-            >
+              aria-label={isMenuOpen ? "Zamknij menu" : "Otwórz menu"}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={isMenuOpen ? 'close' : 'menu'}
                   initial={{ opacity: 0, rotate: isMenuOpen ? -90 : 90 }}
                   animate={{ opacity: 1, rotate: 0 }}
                   exit={{ opacity: 0, rotate: isMenuOpen ? 90 : -90 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  {isMenuOpen ? (
-                    <X className="h-6 w-6 text-white" />
-                  ) : (
-                    <Menu className="h-6 w-6 text-white" />
-                  )}
+                  transition={{ duration: 0.2 }}>
+                  {isMenuOpen ? (<X className="h-6 w-6 text-white" />) : (<Menu className="h-6 w-6 text-white" />)}
                 </motion.div>
               </AnimatePresence>
             </button>
           </div>
         </div>
-
         {/* Mobile menu */}
         <AnimatePresence>
           {isMenuOpen && (
@@ -258,8 +212,7 @@ export default function ImprovedHeader() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: '100vh' }}
               exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-            >
+              transition={{ duration: 0.3 }}>
               <div className="container mx-auto px-4 flex flex-col items-center">
                 <motion.div 
                   className="flex flex-col items-center space-y-6 w-full"
@@ -267,22 +220,18 @@ export default function ImprovedHeader() {
                     hidden: { opacity: 0 },
                     visible: {
                       opacity: 1,
-                      transition: {
-                        staggerChildren: 0.1,
-                      },
-                    },
+                      transition: { staggerChildren: 0.1 }
+                    }
                   }}
                   initial="hidden"
-                  animate="visible"
-                >
+                  animate="visible">
                   {navItems.map((item) => (
                     <motion.div
                       key={item.path}
                       variants={{
                         hidden: { opacity: 0, y: 20 },
-                        visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-                      }}
-                    >
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.3 } }
+                      }}>
                       <NavItem
                         href={item.path}
                         label={item.label}
@@ -298,26 +247,20 @@ export default function ImprovedHeader() {
           )}
         </AnimatePresence>
       </motion.header>
-      
       {/* Automatic header hint animation for first-time users */}
       {!userInteracted && (
         <motion.div
           className="fixed left-1/2 bottom-24 transform -translate-x-1/2 z-50 bg-gray-800/80 backdrop-blur-sm px-4 py-2 rounded-full text-white text-sm flex items-center shadow-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 3, duration: 0.5 }}
-        >
+          transition={{ delay: 3, duration: 0.5 }}>
           <span>Przewiń, aby odkryć więcej</span>
           <motion.div
             className="ml-2"
             animate={{ y: [0, 5, 0] }}
-            transition={{ repeat: Infinity, duration: 1.5 }}
-          >
-            ↓
-          </motion.div>
+            transition={{ repeat: Infinity, duration: 1.5 }}>↓</motion.div>
         </motion.div>
       )}
-      
       {/* Easter Egg */}
       <AnimatePresence>
         {showEasterEgg && (
@@ -325,29 +268,16 @@ export default function ImprovedHeader() {
             className="fixed inset-0 z-[100] flex items-center justify-center pointer-events-none"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-          >
+            exit={{ opacity: 0 }}>
             <motion.div 
               className="bg-blue-500/30 backdrop-blur-md p-8 rounded-xl text-center max-w-md"
               initial={{ scale: 0.8, rotate: -5 }}
-              animate={{ 
-                scale: 1, 
-                rotate: [5, -5, 5, -5, 0],
-                transition: { duration: 0.8 }
-              }}
-              exit={{ scale: 0.8, opacity: 0 }}
-            >
+              animate={{ scale: 1, rotate: [5, -5, 5, -5, 0], transition: { duration: 0.8 } }}
+              exit={{ scale: 0.8, opacity: 0 }}>
               <motion.h2 
                 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-pink-500 mb-4"
-                animate={{ 
-                  textShadow: [
-                    "0 0 5px rgba(255,255,255,0.5)",
-                    "0 0 20px rgba(255,255,255,0.8)",
-                    "0 0 5px rgba(255,255,255,0.5)"
-                  ]
-                }}
-                transition={{ repeat: Infinity, duration: 2 }}
-              >
+                animate={{ textShadow: ["0 0 5px rgba(255,255,255,0.5)", "0 0 20px rgba(255,255,255,0.8)", "0 0 5px rgba(255,255,255,0.5)"] }}
+                transition={{ repeat: Infinity, duration: 2 }}>
                 Sekretny Kod Aktywowany!
               </motion.h2>
               <p className="text-white">Jesteś prawdziwym odkrywcą! Możesz teraz kliknąć dowolny element na stronie, aby zobaczyć ukrytą animację.</p>
